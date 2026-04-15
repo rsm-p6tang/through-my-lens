@@ -186,7 +186,7 @@
         <span>through my lens</span>
         A collection of moments
       </div>
-      <div class="photo-count" id="count">12 photos</div>
+      <div class="photo-count" id="count"></div>
     </header>
 
     <div class="filters" id="filters">
@@ -196,31 +196,40 @@
     <div class="masonry" id="gallery"></div>
     <div class="empty-state" id="empty">No photos for this year yet.</div>
 
-    <div class="footer">
-      &copy; 2025 &nbsp;&middot;&nbsp; Through My Lens
-    </div>
+    <div class="footer">&copy; 2025 &nbsp;&middot;&nbsp; Through My Lens</div>
   </div>
 
   <script>
-    // -------------------------------------------------------
-    // YOUR PHOTOS — edit this list to add your own!
-    // Replace the "src" with your image filenames or URLs.
-    // Update "tag" and "year" to match your photos.
-    // -------------------------------------------------------
-    const photos = [
-      { src: "https://picsum.photos/seed/10/300/420",  tag: "nature",       year: 2022 },
-      { src: "https://picsum.photos/seed/20/300/225",  tag: "street",       year: 2023 },
-      { src: "https://picsum.photos/seed/30/300/300",  tag: "portrait",     year: 2024 },
-      { src: "https://picsum.photos/seed/40/300/480",  tag: "travel",       year: 2022 },
-      { src: "https://picsum.photos/seed/50/300/255",  tag: "architecture", year: 2025 },
-      { src: "https://picsum.photos/seed/60/300/360",  tag: "golden hour",  year: 2023 },
-      { src: "https://picsum.photos/seed/70/300/210",  tag: "macro",        year: 2024 },
-      { src: "https://picsum.photos/seed/80/300/450",  tag: "landscape",    year: 2025 },
-      { src: "https://picsum.photos/seed/90/300/300",  tag: "urban",        year: 2022 },
-      { src: "https://picsum.photos/seed/100/300/270", tag: "flora",        year: 2023 },
-      { src: "https://picsum.photos/seed/110/300/390", tag: "candid",       year: 2024 },
-      { src: "https://picsum.photos/seed/120/300/240", tag: "texture",      year: 2025 },
+    const tags = [
+      "analog", "film", "35mm", "street", "portrait",
+      "golden hour", "architecture", "travel", "candid",
+      "nature", "texture", "urban", "light & shadow",
+      "everyday", "moody", "flora", "people", "places"
     ];
+
+    // Years distributed across 279 photos
+    // Update these ranges if your photos are from different years!
+    function getYear(i) {
+      if (i <= 70)  return 2022;
+      if (i <= 140) return 2023;
+      if (i <= 210) return 2024;
+      return 2025;
+    }
+
+    // Optional: override specific photos with specific years
+    // Example: { photo: 5, year: 2023 }
+    const yearOverrides = [];
+    const overrideMap = {};
+    yearOverrides.forEach(o => overrideMap[o.photo] = o.year);
+
+    const photos = [];
+    for (let i = 1; i <= 279; i++) {
+      photos.push({
+        src: `photos/photo${i}.jpg`,
+        tag: tags[(i - 1) % tags.length],
+        year: overrideMap[i] || getYear(i)
+      });
+    }
 
     const years = ["All", ...Array.from(new Set(photos.map(p => p.year))).sort()];
     const gallery = document.getElementById("gallery");
@@ -275,6 +284,8 @@
       emptyEl.style.display = visible === 0 ? "block" : "none";
       gallery.style.display = visible === 0 ? "none" : "";
     }
+
+    filterPhotos();
   </script>
 </body>
 </html>
