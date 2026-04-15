@@ -207,8 +207,6 @@
       "everyday", "moody", "flora", "people", "places"
     ];
 
-    // Years distributed across 279 photos
-    // Update these ranges if your photos are from different years!
     function getYear(i) {
       if (i <= 70)  return 2022;
       if (i <= 140) return 2023;
@@ -216,18 +214,12 @@
       return 2025;
     }
 
-    // Optional: override specific photos with specific years
-    // Example: { photo: 5, year: 2023 }
-    const yearOverrides = [];
-    const overrideMap = {};
-    yearOverrides.forEach(o => overrideMap[o.photo] = o.year);
-
     const photos = [];
     for (let i = 1; i <= 279; i++) {
       photos.push({
-        src: `photos/photo${i}.jpg`,
+        src: `photos/photo${i}.JPG`,
         tag: tags[(i - 1) % tags.length],
-        year: overrideMap[i] || getYear(i)
+        year: getYear(i)
       });
     }
 
